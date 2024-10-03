@@ -1,13 +1,13 @@
-package com.javaweb.springnhatanh;
+package com.javaweb.buildingproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringnhatanhApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringnhatanhApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
