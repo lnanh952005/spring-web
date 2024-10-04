@@ -1,17 +1,9 @@
-package com.javaweb.buildingproject.domain;
+package com.javaweb.buildingproject.DTO;
 
-public class buildingDTO {
+public class BuildingDTO {
     private String name;
-    private String numberOfbasement;
+    private Integer numberOfbasement;
     private String address;
-
-    public String getNumberOfbasement() {
-        return numberOfbasement;
-    }
-
-    public void setNumberOfbasement(String numberOfbasement) {
-        this.numberOfbasement = numberOfbasement;
-    }
 
     public String getName() {
         return name;
@@ -19,6 +11,14 @@ public class buildingDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getNumberOfbasement() {
+        return numberOfbasement;
+    }
+
+    public void setNumberOfbasement(Integer numberOfbasement) {
+        this.numberOfbasement = numberOfbasement;
     }
 
     public String getAddress() {
