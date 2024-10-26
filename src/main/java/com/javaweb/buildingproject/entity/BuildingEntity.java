@@ -1,25 +1,65 @@
 package com.javaweb.buildingproject.entity;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(name = "building")
 public class BuildingEntity {
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "ward")
     private String ward;
-    private Integer districid;
+
+    @Column(name = "structure")
     private String structure;
-    private Integer numberofbasement;
-    private Integer floorarea;
+
+    @Column(name = "numberofbasement")
+    private Long numberOfbasement;
+
+    @Column(name = "floorarea")
+    private Long floorArea;
+
+    @Column(name = "direction")
     private String direction;
-    private String level;
-    private Integer rentprice;
-    private String rentpricedescription;
-    private String managername;
-    private Integer managerphonenumber;
-    public Integer getId() {
+
+    @Column(name = "rentprice")
+    private Long rentPrice;
+
+    @Column(name = "rentpricedescription")
+    private String rentPriceDescription;
+
+    @Column(name = "managername")
+    private String managerName;
+
+    @Column(name = "managerphonenumber")
+    private Long managerPhoneNumber;
+
+    @OneToMany(mappedBy = "building" ,fetch = FetchType.LAZY)
+    private List<RentAreaEntity> rentArea;
+
+    @ManyToOne
+    @JoinColumn(name = "districtid")
+    private DistrictEntity district;
+
+    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
+    private List<BuildingRentType> buildingRentTypes;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,14 +87,6 @@ public class BuildingEntity {
         this.ward = ward;
     }
 
-    public Integer getDistricid() {
-        return districid;
-    }
-
-    public void setDistricid(Integer districid) {
-        this.districid = districid;
-    }
-
     public String getStructure() {
         return structure;
     }
@@ -63,20 +95,20 @@ public class BuildingEntity {
         this.structure = structure;
     }
 
-    public Integer getNumberofbasement() {
-        return numberofbasement;
+    public Long getNumberOfbasement() {
+        return numberOfbasement;
     }
 
-    public void setNumberofbasement(Integer numberofbasement) {
-        this.numberofbasement = numberofbasement;
+    public void setNumberOfbasement(Long numberOfbasement) {
+        this.numberOfbasement = numberOfbasement;
     }
 
-    public Integer getFloorarea() {
-        return floorarea;
+    public Long getFloorArea() {
+        return floorArea;
     }
 
-    public void setFloorarea(Integer floorarea) {
-        this.floorarea = floorarea;
+    public void setFloorArea(Long floorArea) {
+        this.floorArea = floorArea;
     }
 
     public String getDirection() {
@@ -87,43 +119,51 @@ public class BuildingEntity {
         this.direction = direction;
     }
 
-    public String getLevel() {
-        return level;
+    public Long getRentPrice() {
+        return rentPrice;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setRentPrice(Long rentPrice) {
+        this.rentPrice = rentPrice;
     }
 
-    public Integer getRentprice() {
-        return rentprice;
+    public String getRentPriceDescription() {
+        return rentPriceDescription;
     }
 
-    public void setRentprice(Integer rentprice) {
-        this.rentprice = rentprice;
+    public void setRentPriceDescription(String rentPriceDescription) {
+        this.rentPriceDescription = rentPriceDescription;
     }
 
-    public String getRentpricedescription() {
-        return rentpricedescription;
+    public String getManagerName() {
+        return managerName;
     }
 
-    public void setRentpricedescription(String rentpricedescription) {
-        this.rentpricedescription = rentpricedescription;
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
     }
 
-    public String getManagername() {
-        return managername;
+    public Long getManagerPhoneNumber() {
+        return managerPhoneNumber;
     }
 
-    public void setManagername(String managername) {
-        this.managername = managername;
+    public void setManagerPhoneNumber(Long managerPhoneNumber) {
+        this.managerPhoneNumber = managerPhoneNumber;
     }
 
-    public Integer getManagerphonenumber() {
-        return managerphonenumber;
+    public List<RentAreaEntity> getRentArea() {
+        return rentArea;
     }
 
-    public void setManagerphonenumber(Integer managerphonenumber) {
-        this.managerphonenumber = managerphonenumber;
+    public void setRentArea(List<RentAreaEntity> rentArea) {
+        this.rentArea = rentArea;
+    }
+
+    public DistrictEntity getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictEntity district) {
+        this.district = district;
     }
 }

@@ -5,5 +5,6 @@ import com.javaweb.buildingproject.DTO.BuildingDTO;
 import java.util.List;
 
 public interface BuildingService {
-    List<BuildingDTO> findAll();
+    List<BuildingDTO> findByName(String name);
+    List<BuildingDTO> getAllBuilding();
 }

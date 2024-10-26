@@ -2,7 +2,7 @@ package com.javaweb.buildingproject.DTO;
 
 public class BuildingDTO {
     private String name;
-    private Integer numberOfbasement;
+    private Long numberOfbasement;
     private String address;
 
     public String getName() {
@@ -13,11 +13,11 @@ public class BuildingDTO {
         this.name = name;
     }
 
-    public Integer getNumberOfbasement() {
+    public Long getNumberOfbasement() {
         return numberOfbasement;
     }
 
-    public void setNumberOfbasement(Integer numberOfbasement) {
+    public void setNumberOfbasement(Long numberOfbasement) {
         this.numberOfbasement = numberOfbasement;
     }
 
@@ -26,6 +26,13 @@ public class BuildingDTO {
     }
 
     public void setAddress(String address) {
+        this.address = address;
+    }
+    public BuildingDTO() {
+    }
+    public BuildingDTO(String name, Long numberOfbasement, String address) {
+        this.name = name;
+        this.numberOfbasement = numberOfbasement;
         this.address = address;
     }
 }
