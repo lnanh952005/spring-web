@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity(name = "renttype")
+@Entity
+@Table(name = "renttype")
 public class RentTypeEntity {
 
     @Id

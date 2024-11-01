@@ -1,6 +1,6 @@
 package com.javaweb.buildingproject.service.impl;
 
-import com.javaweb.buildingproject.DTO.BuildingDTO;
+import com.javaweb.buildingproject.domain.DTO.BuildingDTO;
 import com.javaweb.buildingproject.entity.BuildingEntity;
 import com.javaweb.buildingproject.repository.BuildingRepository;
 import com.javaweb.buildingproject.service.BuildingService;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
@@ -22,19 +21,39 @@ public class BuildingServiceImpl implements BuildingService {
         List<BuildingDTO> buildingDTOList = new ArrayList<>();
         List<BuildingEntity> buildingEntityList = buildingRepository.findAll();
         for(BuildingEntity item : buildingEntityList){
-            BuildingDTO buildingDTO = new BuildingDTO(item.getName(),item.getNumberOfbasement(),item.getStreet()+","+item.getWard());
+            BuildingDTO buildingDTO = new BuildingDTO();
+            buildingDTO.setName(item.getName());
+            buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
+            buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
             buildingDTOList.add(buildingDTO);
         }
         return buildingDTOList;
     }
 
     @Override
-    public List<BuildingDTO> findByName(String name) {
+    public List<BuildingDTO> getByNumberOfBasement(Long start) {
+        List<BuildingEntity> buildingEntityList = buildingRepository.findByNumberOfBasement(start);
+        List<BuildingDTO> buildingDTOList = new ArrayList<>();
+        for(BuildingEntity item : buildingEntityList){
+            BuildingDTO buildingDTO = new BuildingDTO();
+            buildingDTO.setName(item.getName());
+            buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
+            buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
+            buildingDTOList.add(buildingDTO);
+        }
+        return buildingDTOList;
+    }
+
+    @Override
+    public List<BuildingDTO> getByName(String name) {
         List<BuildingEntity> buildingEntityList = buildingRepository.findAll();
         List<BuildingDTO> buildingDTOList = new ArrayList<>();
-        for(BuildingEntity entity : buildingEntityList){
-            if(entity.getName().toLowerCase().contains(name.toLowerCase())){
-                BuildingDTO buildingDTO = new BuildingDTO(entity.getName(), entity.getNumberOfbasement(), entity.getStreet()+","+entity.getWard());
+        for(BuildingEntity item : buildingEntityList){
+            if(item.getName().toLowerCase().contains(name.toLowerCase())){
+                BuildingDTO buildingDTO = new BuildingDTO();
+                buildingDTO.setName(item.getName());
+                buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
+                buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
                 buildingDTOList.add(buildingDTO);
             }
         }

@@ -3,7 +3,8 @@ package com.javaweb.buildingproject.entity;
 import jakarta.persistence.*;
 import org.apache.catalina.User;
 
-@Entity(name = "user_role")
+@Entity
+@Table(name = "user_role")
 public class UserRoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

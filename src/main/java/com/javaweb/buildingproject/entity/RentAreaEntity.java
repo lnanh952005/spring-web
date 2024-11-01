@@ -13,16 +13,16 @@ public class RentAreaEntity {
     private Long value;
 
     @Column(name = "createddate")
-    private String createddate;
+    private String createdDate;
 
     @Column(name = "modifieddate")
-    private String modifieddate;
+    private String modifiedDate;
 
     @Column(name = "createdby")
-    private String createdby;
+    private String createdBy;
 
     @Column(name = "modifiedby")
-    private String modifiedby;
+    private String modifiedBy;
 
     @ManyToOne()
     @JoinColumn(name = "buildingid")
@@ -44,36 +44,36 @@ public class RentAreaEntity {
         this.value = value;
     }
 
-    public String getCreateddate() {
-        return createddate;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateddate(String createddate) {
-        this.createddate = createddate;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public String getModifieddate() {
-        return modifieddate;
+    public String getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setModifieddate(String modifieddate) {
-        this.modifieddate = modifieddate;
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public String getCreatedby() {
-        return createdby;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreatedby(String createdby) {
-        this.createdby = createdby;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getModifiedby() {
-        return modifiedby;
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setModifiedby(String modifiedby) {
-        this.modifiedby = modifiedby;
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public BuildingEntity getBuilding() {

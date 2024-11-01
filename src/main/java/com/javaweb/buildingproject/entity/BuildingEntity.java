@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "building")
+@Entity
+@Table(name = "building")
 public class BuildingEntity {
 
     @Id
