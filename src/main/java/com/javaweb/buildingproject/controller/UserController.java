@@ -1,14 +1,14 @@
 package com.javaweb.buildingproject.controller;
 
-import com.javaweb.buildingproject.domain.DTO.UserDTO;
-import com.javaweb.buildingproject.domain.ResponseDTO.UserResponse;
-import com.javaweb.buildingproject.domain.requestDTO.UserRequest;
+import com.javaweb.buildingproject.domain.ResponseDTO.RestResponse;
+import com.javaweb.buildingproject.domain.dto.UserDTO;
 import com.javaweb.buildingproject.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,26 +20,34 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/name")
+    public ResponseEntity<?> getUserByUsername(@RequestParam String name){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.fetchUserByUserName(name));
+    }
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        List<UserDTO> userDTOList = userService.getAllUser();
-        return new ResponseEntity<>(userDTOList,HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> fetchAllUsers(ModelMap modelMap){
+        List<UserDTO> userDTOList = userService.fetchAllUser();
+        return ResponseEntity.status(HttpStatus.OK).body(userDTOList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        UserResponse userResponse = userService.getById(id);
-        return new ResponseEntity<>(userResponse,HttpStatus.OK);
+    public ResponseEntity<UserDTO> fetchUserById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.fetchById(id));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest){
-        UserResponse userResponse = userService.createUser(userRequest);
-        return new ResponseEntity<>(userResponse,HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO){
+        return new ResponseEntity<>(userService.createUser(userDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id,@RequestBody UserRequest userRequest){
-        return new ResponseEntity<>(userService.updateUser(id,userRequest),HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id,@RequestBody UserDTO userDTO){
+        return new ResponseEntity<>(userService.updateUser(id,userDTO),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
+        userService.deleteUserById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("user deleted");
     }
 }

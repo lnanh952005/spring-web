@@ -1,39 +1,38 @@
 package com.javaweb.buildingproject.controller;
 
-import com.javaweb.buildingproject.domain.DTO.BuildingDTO;
-
+import com.javaweb.buildingproject.domain.dto.BuildingDTO;
 import com.javaweb.buildingproject.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
 @Controller
+@RequestMapping("/buildings")
+@ResponseBody
 public class BuildingController {
 
     @Autowired
     private BuildingService buildingService;
 
-    @GetMapping(value = "/buildings")
-    public ResponseEntity<?> getAllBuilding(Model model){
-        List<BuildingDTO> buildingDTOList = buildingService.getAllBuilding();
-        model.addAttribute("buildings",buildingDTOList);
-        return new ResponseEntity<>(buildingDTOList, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> fetchBuildingsByid(@PathVariable("id") Long id){
+        return new ResponseEntity<>(buildingService.fetchById(id),HttpStatus.OK);
     }
 
-    @GetMapping(value = "/buildings/name")
-    public List<BuildingDTO> getByName(@RequestParam(value = "name") String name){
-        return buildingService.getByName(name);
+    @GetMapping
+    public ResponseEntity<?> fetchAllBuildings(){
+        return new ResponseEntity<>(buildingService.fetchAllBuilding(),HttpStatus.OK);
     }
 
-    @GetMapping(value = "/buildings/numberofbasements")
-    public List<BuildingDTO> getBuildingByNumberOfBasement(@RequestParam(value = "start") Long start){
-        return buildingService.getByNumberOfBasement(start);
+    @PostMapping
+    public ResponseEntity<?> insertBuilding(BuildingDTO buildingDTO){
+        return new ResponseEntity<>(buildingService.insertBuilding(buildingDTO),HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBuilding(@PathVariable("id") Long id,BuildingDTO buildingDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(buildingService.updateBuilding(id,buildingDTO));
+    }
 }

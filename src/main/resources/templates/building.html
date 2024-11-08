@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Buildings</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>User List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Sử dụng Thymeleaf để lặp qua danh sách userList -->
+    <tr th:each="building : ${buildingList}">
+        <!-- Hiển thị từng user -->
+        <td th:text="${building.name}">Name</td>
+        <td th:text="${building.numberOfbasement}">numberofbasement</td>
+        <td th:text="${building.address}">address</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

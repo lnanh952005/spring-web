@@ -1,8 +1,6 @@
 package com.javaweb.buildingproject.converter;
 
-import com.javaweb.buildingproject.domain.DTO.UserDTO;
-import com.javaweb.buildingproject.domain.ResponseDTO.UserResponse;
-import com.javaweb.buildingproject.domain.requestDTO.UserRequest;
+import com.javaweb.buildingproject.domain.dto.UserDTO;
 import com.javaweb.buildingproject.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,10 @@ public class UserConverter {
         return modelMapper.map(userEntity,UserDTO.class);
     }
 
-    public UserEntity convertToEntity(UserRequest userRequest){
-        return modelMapper.map(userRequest,UserEntity.class);
+    public UserEntity convertToEntity(UserDTO userDTO){
+        return modelMapper.map(userDTO,UserEntity.class);
     }
 
-    public UserResponse convertToResponse(UserEntity userEntity){
-        return modelMapper.map(userEntity,UserResponse.class);
-    }
+
+
 }

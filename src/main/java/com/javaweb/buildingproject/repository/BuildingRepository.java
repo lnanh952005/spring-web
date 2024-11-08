@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
-public interface BuildingRepository extends JpaRepository<BuildingEntity,Long>, BuildingRepositoryCustom {
-
+public interface BuildingRepository extends JpaRepository<BuildingEntity,Long> {
+    boolean existsByname(String name);
+    Optional<BuildingEntity> findByname(String name);
 }

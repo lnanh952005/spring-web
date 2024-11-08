@@ -1,11 +1,13 @@
 package com.javaweb.buildingproject.service;
 
-import com.javaweb.buildingproject.domain.DTO.BuildingDTO;
+import com.javaweb.buildingproject.domain.dto.BuildingDTO;
 
 import java.util.List;
 
 public interface BuildingService {
-    List<BuildingDTO> getByName(String name);
-    List<BuildingDTO> getAllBuilding();
-    List<BuildingDTO> getByNumberOfBasement(Long start);
+    BuildingDTO fetchById(Long id);
+    List<BuildingDTO> fetchAllBuilding();
+    BuildingDTO insertBuilding(BuildingDTO buildingDTO);
+    BuildingDTO updateBuilding(Long id,BuildingDTO buildingDTO);
 }
+

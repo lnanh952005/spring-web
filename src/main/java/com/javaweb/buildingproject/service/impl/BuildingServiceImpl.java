@@ -1,62 +1,67 @@
 package com.javaweb.buildingproject.service.impl;
 
-import com.javaweb.buildingproject.domain.DTO.BuildingDTO;
+import com.javaweb.buildingproject.converter.BuildingConverter;
+import com.javaweb.buildingproject.domain.dto.BuildingDTO;
 import com.javaweb.buildingproject.entity.BuildingEntity;
+import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.BuildingRepository;
 import com.javaweb.buildingproject.service.BuildingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
-    @Autowired
     private BuildingRepository buildingRepository;
+    private BuildingConverter buildingConverter;
+
+    public BuildingServiceImpl(BuildingRepository buildingRepository,BuildingConverter buildingConverter){
+        this.buildingRepository = buildingRepository;
+        this.buildingConverter = buildingConverter;
+    }
 
     @Override
-    public List<BuildingDTO> getAllBuilding() {
+    public BuildingDTO fetchById(Long id) {
+        Optional<BuildingEntity> buildingEntity = buildingRepository.findById(id);
+        if(buildingEntity.isEmpty()){
+            throw new NotFoundException("building not found");
+        }
+        return buildingEntity.map(o->buildingConverter.convertToDTO(o)).get();
+    }
+
+    @Override
+    public List<BuildingDTO> fetchAllBuilding() {
         List<BuildingDTO> buildingDTOList = new ArrayList<>();
         List<BuildingEntity> buildingEntityList = buildingRepository.findAll();
         for(BuildingEntity item : buildingEntityList){
-            BuildingDTO buildingDTO = new BuildingDTO();
-            buildingDTO.setName(item.getName());
-            buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
-            buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
-            buildingDTOList.add(buildingDTO);
+            buildingDTOList.add(buildingConverter.convertToDTO(item));
         }
         return buildingDTOList;
     }
 
     @Override
-    public List<BuildingDTO> getByNumberOfBasement(Long start) {
-        List<BuildingEntity> buildingEntityList = buildingRepository.findByNumberOfBasement(start);
-        List<BuildingDTO> buildingDTOList = new ArrayList<>();
-        for(BuildingEntity item : buildingEntityList){
-            BuildingDTO buildingDTO = new BuildingDTO();
-            buildingDTO.setName(item.getName());
-            buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
-            buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
-            buildingDTOList.add(buildingDTO);
+    public BuildingDTO insertBuilding(BuildingDTO buildingDTO) {
+        if(buildingRepository.existsByname(buildingDTO.getName())){
+            throw new NotFoundException("Building is already existed");
         }
-        return buildingDTOList;
+        BuildingEntity buildingEntity = buildingConverter.convertToEntity(buildingDTO);
+        buildingRepository.save(buildingEntity);
+        return buildingDTO;
     }
 
     @Override
-    public List<BuildingDTO> getByName(String name) {
-        List<BuildingEntity> buildingEntityList = buildingRepository.findAll();
-        List<BuildingDTO> buildingDTOList = new ArrayList<>();
-        for(BuildingEntity item : buildingEntityList){
-            if(item.getName().toLowerCase().contains(name.toLowerCase())){
-                BuildingDTO buildingDTO = new BuildingDTO();
-                buildingDTO.setName(item.getName());
-                buildingDTO.setAddress(item.getStreet() + ", "+ item.getWard());
-                buildingDTO.setNumberOfbasement(item.getNumberOfbasement());
-                buildingDTOList.add(buildingDTO);
-            }
-        }
-        return buildingDTOList;
+    public BuildingDTO updateBuilding(Long id,BuildingDTO buildingDTO) {
+        BuildingEntity buildingEntity = buildingRepository.findById(id).orElseThrow(()-> new NotFoundException("building not exist"));
+        buildingEntity.setName(buildingDTO.getName());
+        buildingEntity.setStreet(buildingDTO.getStreet());
+        buildingEntity.setWard(buildingDTO.getWard());
+        buildingEntity.setFloorArea(buildingDTO.getFloorArea());
+        buildingEntity.setNumberOfBasement(buildingDTO.getNumberOfBasement());
+        buildingRepository.save(buildingEntity);
+        return buildingDTO;
     }
+
 }

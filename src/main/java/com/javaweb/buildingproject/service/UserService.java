@@ -1,14 +1,14 @@
 package com.javaweb.buildingproject.service;
 
-import com.javaweb.buildingproject.domain.DTO.UserDTO;
-import com.javaweb.buildingproject.domain.ResponseDTO.UserResponse;
-import com.javaweb.buildingproject.domain.requestDTO.UserRequest;
+import com.javaweb.buildingproject.domain.dto.UserDTO;
 
-import java.util.List;
+import java.util.List;;
 
 public interface UserService {
-    List<UserDTO> getAllUser();
-    UserResponse getById(Long id);
-    UserResponse createUser(UserRequest userRequest);
-    UserResponse updateUser(Long id, UserRequest userRequest);
+    UserDTO fetchUserByUserName(String username);
+    List<UserDTO> fetchAllUser();
+    UserDTO fetchById(Long id);
+    UserDTO createUser(UserDTO userRequest);
+    UserDTO updateUser(Long id, UserDTO userRequest);
+    void deleteUserById(Long id);
 }

@@ -1,30 +1,42 @@
 package com.javaweb.buildingproject.service.impl;
 
-import com.javaweb.buildingproject.domain.DTO.UserDTO;
+import com.javaweb.buildingproject.domain.dto.UserDTO;
 import com.javaweb.buildingproject.converter.UserConverter;
-import com.javaweb.buildingproject.domain.ResponseDTO.UserResponse;
-import com.javaweb.buildingproject.domain.requestDTO.UserRequest;
 import com.javaweb.buildingproject.entity.UserEntity;
+import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.UserRepository;
 import com.javaweb.buildingproject.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConverter userConverter;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserConverter userConverter) {
+    public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public List<UserDTO> getAllUser() {
+    public UserDTO fetchUserByUserName(String username) {
+        Optional<UserEntity> userEntity = userRepository.findByuserName(username);
+        if(userEntity.isEmpty()){
+            throw new NotFoundException("user not found");
+        }
+        return userConverter.convertToDTO(userEntity.get());
+    }
+
+    @Override
+    public List<UserDTO> fetchAllUser() {
         List<UserEntity> userEntityList = userRepository.findAll();
         List<UserDTO> userDTOList = new ArrayList<>();
         for(UserEntity item : userEntityList){
@@ -34,26 +46,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getById(Long id) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        return userConverter.convertToResponse(userEntity);
+    public UserDTO fetchById(Long id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
+        return userConverter.convertToDTO(userEntity);
     }
 
     @Override
-    public UserResponse updateUser(Long id, UserRequest userRequest) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(()->new RuntimeException("user not exits"));
-        UserResponse userResponse = userConverter.convertToResponse(userEntity);
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(()->new NotFoundException("user not found"));
+        userEntity.setPassWord(userDTO.getPassWord());
+        userEntity.setEmail(userDTO.getEmail());
+        userEntity.setPhone(userDTO.getPhone());
+        userEntity.setFullName(userDTO.getFullName());
         userRepository.save(userEntity);
-        return userResponse;
+        return userDTO;
     }
 
     @Override
-    public UserResponse createUser(UserRequest userRequest) {
-        if(userRepository.existsByuserName(userRequest.getUserName()) || userRepository.existsByemail(userRequest.getEmail())){
-            throw new RuntimeException("user name or email already existed");
+    public UserDTO createUser(UserDTO userDTO) {
+        if(userRepository.existsByuserName(userDTO.getUserName()) || userRepository.existsByemail(userDTO.getEmail())){
+            throw new NotFoundException("user name or email already existed");
         }
-        UserEntity userEntity = userConverter.convertToEntity(userRequest);
+        UserEntity userEntity = userConverter.convertToEntity(userDTO);
+        userEntity.setPassWord(passwordEncoder.encode(userEntity.getPassWord()));
         userRepository.save(userEntity);
-        return userConverter.convertToResponse(userEntity);
+        return userConverter.convertToDTO(userEntity);
     }
+
+    @Override
+    public void deleteUserById(Long id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(userEntity);
+    }
+
+
 }
