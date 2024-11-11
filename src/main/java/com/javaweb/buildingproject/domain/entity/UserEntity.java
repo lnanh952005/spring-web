@@ -1,5 +1,4 @@
-package com.javaweb.buildingproject.entity;
-
+package com.javaweb.buildingproject.domain.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,13 +15,13 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "username")
-    private String userName;
+    private String username;
 
     @Column(name = "password")
-    private String passWord;
+    private String password;
 
     @Column(name = "fullname")
-    private String fullName;
+    private String fullname;
 
     @Column(name = "phone")
     private Long phone;

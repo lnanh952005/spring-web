@@ -28,8 +28,8 @@ public class UserDetailsServiceCustom implements UserDetailsService {
             throw new UsernameNotFoundException("tk hoặc mk không hợp lệ");
         }
         return new User(
-                userDTO.getUserName(),
-                userDTO.getPassWord(),
+                userDTO.getUsername(),
+                userDTO.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority("user_role"))
         );
     }

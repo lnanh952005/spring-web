@@ -2,7 +2,7 @@ package com.javaweb.buildingproject.service.impl;
 
 import com.javaweb.buildingproject.converter.BuildingConverter;
 import com.javaweb.buildingproject.domain.dto.BuildingDTO;
-import com.javaweb.buildingproject.entity.BuildingEntity;
+import com.javaweb.buildingproject.domain.entity.BuildingEntity;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.BuildingRepository;
 import com.javaweb.buildingproject.service.BuildingService;

@@ -1,6 +1,6 @@
 package com.javaweb.buildingproject.repository.Custom;
 
-import com.javaweb.buildingproject.entity.BuildingEntity;
+import com.javaweb.buildingproject.domain.entity.BuildingEntity;
 
 import java.util.List;
 

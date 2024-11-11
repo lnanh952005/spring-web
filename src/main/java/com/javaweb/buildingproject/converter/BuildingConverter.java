@@ -1,7 +1,7 @@
 package com.javaweb.buildingproject.converter;
 
 import com.javaweb.buildingproject.domain.dto.BuildingDTO;
-import com.javaweb.buildingproject.entity.BuildingEntity;
+import com.javaweb.buildingproject.domain.entity.BuildingEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

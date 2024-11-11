@@ -2,7 +2,7 @@ package com.javaweb.buildingproject.service.impl;
 
 import com.javaweb.buildingproject.domain.dto.UserDTO;
 import com.javaweb.buildingproject.converter.UserConverter;
-import com.javaweb.buildingproject.entity.UserEntity;
+import com.javaweb.buildingproject.domain.entity.UserEntity;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.UserRepository;
 import com.javaweb.buildingproject.service.UserService;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO fetchUserByUserName(String username) {
-        Optional<UserEntity> userEntity = userRepository.findByuserName(username);
+        Optional<UserEntity> userEntity = userRepository.findByusername(username);
         if(userEntity.isEmpty()){
             throw new NotFoundException("user not found");
         }
@@ -54,21 +54,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(()->new NotFoundException("user not found"));
-        userEntity.setPassWord(userDTO.getPassWord());
+        userEntity.setPassword(userDTO.getPassword());
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setPhone(userDTO.getPhone());
-        userEntity.setFullName(userDTO.getFullName());
+        userEntity.setFullname(userDTO.getFullname());
         userRepository.save(userEntity);
         return userDTO;
     }
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        if(userRepository.existsByuserName(userDTO.getUserName()) || userRepository.existsByemail(userDTO.getEmail())){
+        if(userRepository.existsByusername(userDTO.getUsername()) || userRepository.existsByemail(userDTO.getEmail())){
             throw new NotFoundException("user name or email already existed");
         }
         UserEntity userEntity = userConverter.convertToEntity(userDTO);
-        userEntity.setPassWord(passwordEncoder.encode(userEntity.getPassWord()));
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
         return userConverter.convertToDTO(userEntity);
     }

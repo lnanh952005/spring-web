@@ -1,7 +1,6 @@
-package com.javaweb.buildingproject.entity;
+package com.javaweb.buildingproject.domain.entity;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
 
 @Entity
 @Table(name = "user_role")

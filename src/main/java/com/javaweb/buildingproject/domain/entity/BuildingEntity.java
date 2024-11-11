@@ -1,10 +1,8 @@
-package com.javaweb.buildingproject.entity;
+package com.javaweb.buildingproject.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "building")
@@ -48,15 +46,4 @@ public class BuildingEntity {
 
     @Column(name = "managerphonenumber")
     private Long managerPhoneNumber;
-
-    @OneToMany(mappedBy = "building" ,fetch = FetchType.LAZY)
-    private List<RentAreaEntity> rentArea;
-
-    @ManyToOne
-    @JoinColumn(name = "districtid")
-    private DistrictEntity district;
-
-    @OneToMany(mappedBy = "building",fetch = FetchType.LAZY)
-    private List<BuildingRentType> buildingRentTypes;
-
 }
