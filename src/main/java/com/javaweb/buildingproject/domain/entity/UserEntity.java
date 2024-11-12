@@ -1,4 +1,5 @@
 package com.javaweb.buildingproject.domain.entity;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,4 @@ public class UserEntity {
     @Column(name = "status")
     private Long status;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private List<UserRoleEntity> userRole;
 }

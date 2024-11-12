@@ -17,7 +17,7 @@ public class BuildingController {
     private BuildingService buildingService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> fetchBuildingsByid(@PathVariable("id") Long id){
+    public ResponseEntity<BuildingDTO> fetchBuildingsByid(@PathVariable("id") Long id){
         return new ResponseEntity<>(buildingService.fetchById(id),HttpStatus.OK);
     }
 

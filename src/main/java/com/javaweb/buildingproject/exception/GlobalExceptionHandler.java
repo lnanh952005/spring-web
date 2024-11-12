@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
         RestResponse<Object> restResponse = new RestResponse<>();
         restResponse.setError(errors.size() > 1 ? errors : errors.get(0)); //exception của @Valid
         restResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        restResponse.setMessage("vui lòng nhập lại tk và mk");
+        restResponse.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(restResponse);
     }
 

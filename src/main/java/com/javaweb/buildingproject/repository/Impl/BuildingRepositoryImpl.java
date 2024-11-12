@@ -4,7 +4,6 @@ import com.javaweb.buildingproject.domain.entity.BuildingEntity;
 import com.javaweb.buildingproject.repository.Custom.BuildingRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
