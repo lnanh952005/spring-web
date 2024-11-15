@@ -1,13 +1,11 @@
 package com.javaweb.buildingproject.service.impl;
 
 import com.javaweb.buildingproject.domain.dto.UserDTO;
-import com.javaweb.buildingproject.service.UserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

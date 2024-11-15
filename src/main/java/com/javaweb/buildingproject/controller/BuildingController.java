@@ -1,7 +1,7 @@
 package com.javaweb.buildingproject.controller;
 
 import com.javaweb.buildingproject.domain.dto.BuildingDTO;
-import com.javaweb.buildingproject.service.BuildingService;
+import com.javaweb.buildingproject.service.impl.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
