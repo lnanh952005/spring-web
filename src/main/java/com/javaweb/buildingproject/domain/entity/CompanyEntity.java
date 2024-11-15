@@ -39,4 +39,13 @@ public class CompanyEntity {
     @Column(name = "updatedby")
     private String updatedBy;
 
+    @PrePersist
+    public void handleCreatedAt() {
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleUpdatedAt() {
+        this.updatedAt = Instant.now();
+    }
 }

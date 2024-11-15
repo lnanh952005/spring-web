@@ -1,7 +1,7 @@
 package com.javaweb.buildingproject.utils;
 
-import com.javaweb.buildingproject.domain.ResponseDTO.RestResponse;
-import jakarta.servlet.http.HttpServletResponse;
+import com.javaweb.buildingproject.annotation.ApiMessage;
+import com.javaweb.buildingproject.domain.Response.RestResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -25,17 +25,12 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-        HttpServletResponse httpServletResponse = ((ServletServerHttpResponse) response).getServletResponse();
         RestResponse<Object> restResponse = new RestResponse<>();
-        restResponse.setStatusCode(httpServletResponse.getStatus());
-        if(httpServletResponse.getStatus() >= 400){
-            return body;
-        }
-        else{
-            restResponse.setError(null);
-            restResponse.setData(body);
-            restResponse.setMessage("Call api success");
-        }
+        restResponse.setStatusCode(((ServletServerHttpResponse) response).getServletResponse().getStatus());
+        restResponse.setError(null);
+        restResponse.setData(body);
+        ApiMessage apiMessage = returnType.getMethodAnnotation(ApiMessage.class);
+        restResponse.setMessage(apiMessage.value());
         return restResponse;
     }
 }

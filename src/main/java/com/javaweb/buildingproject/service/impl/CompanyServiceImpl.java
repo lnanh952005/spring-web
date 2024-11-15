@@ -61,19 +61,24 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO updateCompany(Long id,CompanyDTO companyRequest) {
-        CompanyDTO companyDTO = fetchCompanyById(id);
-        if(companyDTO == null) {
+        Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(id);
+        if(companyEntityOptional.isEmpty()) {
             throw new NotFoundException("Company Not Found");
         }
-        companyRepository.save(companyConverter.convertToEntity(companyRequest));
-        return companyDTO;
+        CompanyEntity companyEntity = companyEntityOptional.get();
+        companyEntity.setName(companyRequest.getName());
+        companyEntity.setAddress(companyRequest.getAddress());
+        companyEntity.setDescription(companyRequest.getDescription());
+        companyEntity.setLogo(companyRequest.getLogo());
+        companyRepository.save(companyEntity);
+        return companyRequest;
     }
 
     @Override
     public void deleteCompany(Long id) {
-        if(companyRepository.existsById(id)) {
-            companyRepository.deleteById(id);
+        if(!companyRepository.existsById(id)) {
+            throw new NotFoundException("Company Not Found");
         }
-        throw new NotFoundException("Company Not Found");
+        companyRepository.deleteById(id);
     }
 }

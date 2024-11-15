@@ -1,11 +1,17 @@
 package com.javaweb.buildingproject.service.impl;
 
+import com.javaweb.buildingproject.domain.Response.Meta;
+import com.javaweb.buildingproject.domain.dto.ResultPaginationDTO;
 import com.javaweb.buildingproject.domain.dto.UserDTO;
 import com.javaweb.buildingproject.converter.UserConverter;
 import com.javaweb.buildingproject.domain.entity.UserEntity;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.UserRepository;
 import com.javaweb.buildingproject.service.UserService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +42,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> fetchAllUser() {
-        List<UserEntity> userEntityList = userRepository.findAll();
+    public ResultPaginationDTO fetchAllUser(Specification<UserEntity> specification,Pageable pageable) {
+        Page<UserEntity> userEntityPage = userRepository.findAll(specification,pageable);
+        List<UserEntity> userEntityList = userEntityPage.getContent();
+        ResultPaginationDTO resultPaginationDTO = new ResultPaginationDTO();
+        Meta meta = new Meta();
+
+        meta.setPage(pageable.getPageNumber());
+        meta.setPageSize(pageable.getPageSize());
+
+        meta.setPages(userEntityPage.getTotalPages());
+        meta.setTotal(userEntityPage.getTotalElements());
+
+        resultPaginationDTO.setMeta(meta);
         List<UserDTO> userDTOList = new ArrayList<>();
         for(UserEntity item : userEntityList){
             userDTOList.add(userConverter.convertToDTO(item));
         }
-        return userDTOList;
+        resultPaginationDTO.setResult(userDTOList);
+        return resultPaginationDTO;
     }
 
     @Override
@@ -78,6 +96,5 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(userEntity);
     }
-
 
 }

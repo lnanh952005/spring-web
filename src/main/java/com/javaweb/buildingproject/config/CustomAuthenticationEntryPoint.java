@@ -1,7 +1,7 @@
 package com.javaweb.buildingproject.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javaweb.buildingproject.domain.ResponseDTO.RestResponse;
+import com.javaweb.buildingproject.domain.Response.RestResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,6 +1,6 @@
 package com.javaweb.buildingproject.exception;
 
-import com.javaweb.buildingproject.domain.ResponseDTO.RestResponse;
+import com.javaweb.buildingproject.domain.Response.RestResponse;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
