@@ -1,4 +1,4 @@
-package com.javaweb.buildingproject.service.impl;
+package com.javaweb.buildingproject.service;
 
 import com.javaweb.buildingproject.converter.BuildingConverter;
 import com.javaweb.buildingproject.domain.dto.BuildingDTO;

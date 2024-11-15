@@ -1,4 +1,4 @@
-package com.javaweb.buildingproject.service.impl;
+package com.javaweb.buildingproject.service;
 
 import com.javaweb.buildingproject.domain.Response.Meta;
 import com.javaweb.buildingproject.domain.dto.ResultPaginationDTO;

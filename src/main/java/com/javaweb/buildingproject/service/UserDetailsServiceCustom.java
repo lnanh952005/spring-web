@@ -1,4 +1,4 @@
-package com.javaweb.buildingproject.service.impl;
+package com.javaweb.buildingproject.service;
 
 import com.javaweb.buildingproject.domain.dto.UserDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,9 +13,9 @@ import java.util.Collections;
 //@Component("userDetailsService")
 @Service
 public class UserDetailsServiceCustom implements UserDetailsService {
-    private UserService userService;
+    private com.javaweb.buildingproject.service.impl.UserService userService;
 
-    public UserDetailsServiceCustom(UserService userService){
+    public UserDetailsServiceCustom(com.javaweb.buildingproject.service.impl.UserService userService){
         this.userService = userService;
     }
 
