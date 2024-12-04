@@ -1,6 +1,6 @@
 package com.javaweb.buildingproject.domain.dto;
 
-import jakarta.validation.constraints.Email;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
+    private Long id;
+
     @NotBlank(message = "không được để trống")
     private String fullname;
 
@@ -25,7 +28,4 @@ public class UserDTO {
     private Long phone;
 
     private String email;
-
-    private Long status;
-
 }

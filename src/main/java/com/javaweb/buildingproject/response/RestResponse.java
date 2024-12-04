@@ -1,4 +1,4 @@
-package com.javaweb.buildingproject.domain.Response;
+package com.javaweb.buildingproject.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({"statusCode","error","message","data"})
-public class RestResponse<T> {
-    private Integer statusCode;
+public class RestResponse {
+    private Object statusCode;
     private Object error;
     private Object message;
-    private T data;
+    private Object data;
 }

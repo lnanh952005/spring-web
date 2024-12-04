@@ -1,7 +1,7 @@
-package com.javaweb.buildingproject.config;
+package com.javaweb.buildingproject.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javaweb.buildingproject.domain.Response.RestResponse;
+import com.javaweb.buildingproject.response.RestResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         this.delegate.commence(request, response, authException);
         response.setContentType("application/json;charset=UTF-8");
 
-        RestResponse<Object> res = new RestResponse<Object>();
+        RestResponse res = new RestResponse();
         res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
         String errorMessage = Optional.ofNullable(authException.getCause())
                 .map(Throwable::getMessage).orElse(authException.getMessage());

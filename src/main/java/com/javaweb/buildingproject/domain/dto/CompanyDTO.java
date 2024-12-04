@@ -1,13 +1,21 @@
 package com.javaweb.buildingproject.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.Instant;
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyDTO {
+    private Long id;
+
     @NotBlank(message = "không được để trống")
     private String name;
 

@@ -1,4 +1,4 @@
-package com.javaweb.buildingproject.config;
+package com.javaweb.buildingproject.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

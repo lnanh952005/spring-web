@@ -1,7 +1,9 @@
 package com.javaweb.buildingproject.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javaweb.buildingproject.annotation.ApiMessage;
-import com.javaweb.buildingproject.domain.Response.RestResponse;
+import com.javaweb.buildingproject.response.RestResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -25,12 +27,15 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-        RestResponse<Object> restResponse = new RestResponse<>();
+        if (body instanceof String) {
+            return body;
+        }
+        RestResponse restResponse = new RestResponse();
         restResponse.setStatusCode(((ServletServerHttpResponse) response).getServletResponse().getStatus());
         restResponse.setError(null);
         restResponse.setData(body);
         ApiMessage apiMessage = returnType.getMethodAnnotation(ApiMessage.class);
-        restResponse.setMessage(apiMessage.value());
+        restResponse.setMessage(apiMessage == null ? "call api successfully" : apiMessage.value());
         return restResponse;
     }
 }
