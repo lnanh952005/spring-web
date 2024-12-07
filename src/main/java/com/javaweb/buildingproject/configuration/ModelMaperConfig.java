@@ -1,5 +1,6 @@
 package com.javaweb.buildingproject.configuration;
 
+import com.javaweb.buildingproject.service.JobService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.modelmapper.ModelMapper;

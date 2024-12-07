@@ -1,11 +1,13 @@
 package com.javaweb.buildingproject.service;
 
 import com.javaweb.buildingproject.domain.dto.PaginationDTO;
+import com.javaweb.buildingproject.domain.entity.UserEntity;
 import com.javaweb.buildingproject.mapper.CompanyMapper;
 import com.javaweb.buildingproject.domain.dto.CompanyDTO;
 import com.javaweb.buildingproject.domain.entity.CompanyEntity;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import com.javaweb.buildingproject.repository.CompanyRepository;
+import com.javaweb.buildingproject.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,15 +16,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService{
     private CompanyRepository companyRepository;
     private CompanyMapper companyMapper;
+    private UserRepository userRepository;
 
-    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper, UserRepository userRepository) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.userRepository = userRepository;
     }
 
     public CompanyDTO fetchCompanyById(Long id) {
@@ -46,7 +51,7 @@ public class CompanyService{
         PaginationDTO paginationDTO = new PaginationDTO();
         PaginationDTO.Meta meta = new PaginationDTO.Meta();
         List<CompanyEntity> companyEntityList = page.getContent();
-        List<CompanyDTO> companyDTOList = companyMapper.toDTOs(companyEntityList);
+        List<CompanyDTO> companyDTOList = companyEntityList.stream().map(e->companyMapper.toDTO(e)).collect(Collectors.toList());
         meta.setPage(pageable.getPageNumber()+1);
         meta.setPageSize(pageable.getPageSize());
         meta.setPages(page.getTotalPages());
@@ -80,9 +85,12 @@ public class CompanyService{
     }
 
     public void deleteCompany(Long id) {
-        if(!companyRepository.existsById(id)) {
+        Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(id);
+        if(companyEntityOptional.isEmpty()) {
             throw new NotFoundException("Company Not Found");
         }
+        List<UserEntity> userEntityList = userRepository.findByCompany(companyEntityOptional.get());
+        userRepository.deleteAll(userEntityList);
         companyRepository.deleteById(id);
     }
 }

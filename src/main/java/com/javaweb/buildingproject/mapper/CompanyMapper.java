@@ -22,8 +22,5 @@ public class CompanyMapper {
         return modelMapper.map(companyDTO, CompanyEntity.class);
     }
 
-    public List<CompanyDTO> toDTOs(List<CompanyEntity> companyEntityList){
-        return modelMapper.map(companyEntityList,List.class);
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.javaweb.buildingproject.domain.entity;
 
+import com.javaweb.buildingproject.utils.SecurityUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,15 +55,19 @@ public class UserEntity {
     @Column(name = "updatedby")
     private String updatedBy;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
+
     @PrePersist
     void preCreatedAt() {
         this.createdAt = Instant.now();
-        this.createdBy = "le nhat anh";
+        this.createdBy = SecurityUtils.getUserDetails().toString();
     }
 
     @PreUpdate
     void preUpdatedAt() {
         this.updatedAt = Instant.now();
-        this.updatedBy = "le nhat anh";
+        this.updatedBy = SecurityUtils.getUserDetails().toString();
     }
 }

@@ -1,5 +1,7 @@
 package com.javaweb.buildingproject.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.javaweb.buildingproject.utils.SecurityUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,13 +42,24 @@ public class CompanyEntity {
     @Column(name = "updatedby")
     private String updatedBy;
 
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<UserEntity> user;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<JobEntity> job;
+
     @PrePersist
-    public void handleCreatedAt() {
+    public void handleBeforeCreate() {
+        this.createdBy = SecurityUtils.getUserDetails().toString();
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
-    public void handleUpdatedAt() {
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtils.getUserDetails().toString();
         this.updatedAt = Instant.now();
     }
+
 }

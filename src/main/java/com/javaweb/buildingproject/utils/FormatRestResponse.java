@@ -1,5 +1,6 @@
 package com.javaweb.buildingproject.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javaweb.buildingproject.annotation.ApiMessage;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @ControllerAdvice
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override

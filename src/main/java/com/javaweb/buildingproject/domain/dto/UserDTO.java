@@ -28,4 +28,8 @@ public class UserDTO {
     private Long phone;
 
     private String email;
+
+    private Long age;
+
+    private CompanyDTO company;
 }

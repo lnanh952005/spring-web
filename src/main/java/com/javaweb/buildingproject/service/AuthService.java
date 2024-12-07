@@ -64,7 +64,7 @@ public class AuthService {
     }
 
     public String generateAndSaveRefreshToken(LoginDTO loginDTO) throws JOSEException {
-        Optional<UserEntity> userEntityOptional = userRepository.findByusername(loginDTO.getUsername());
+        Optional<UserEntity> userEntityOptional = userRepository.findByUsername(loginDTO.getUsername());
         if(userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
             RestLoginDTO.Userlogin userlogin = new RestLoginDTO.Userlogin();
@@ -103,7 +103,7 @@ public class AuthService {
 
     public void logout(String refreshtoken){
         Jwt decodedJwt = jwtDecoder(refreshtoken);
-        Optional<UserEntity> userEntityOptional = userRepository.findByusername(decodedJwt.getSubject());
+        Optional<UserEntity> userEntityOptional = userRepository.findByUsername(decodedJwt.getSubject());
         if(userEntityOptional.isPresent()){
             UserEntity userEntity = userEntityOptional.get();
             userEntity.setRefreshToken(null);

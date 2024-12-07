@@ -1,29 +1,33 @@
 package com.javaweb.buildingproject.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
+import com.javaweb.buildingproject.enums.LevelEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.Instant;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class CompanyDTO {
+@Getter
+@Setter
+public class JobDTO {
     private Long id;
 
-    @NotBlank(message = "không được để trống")
     private String name;
 
-    private String address;
+    private String location;
+
+    private Double salary;
+
+    private Integer quantity;
+
+    private LevelEnum level;
 
     private String description;
 
-    private String logo;
+    private CompanyDTO company;
 
     private Instant createdAt;
 
@@ -32,6 +36,4 @@ public class CompanyDTO {
     private String createdBy;
 
     private String updatedBy;
-
-    private UserDTO user;
 }

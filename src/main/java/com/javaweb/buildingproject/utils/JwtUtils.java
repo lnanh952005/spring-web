@@ -14,6 +14,7 @@ import com.nimbusds.jose.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +44,8 @@ public class JwtUtils {
                 .subject(name)
                 .claim("user", userlogin)
                 .claim("permissions", authorityList)
-                .issueTime(new Date()) // Thời gian phát hành
-                .expirationTime(new Date(System.currentTimeMillis() + accessTokenExpiration ))
+                .issueTime(new Date())
+                .expirationTime(new Date(Instant.now().plusSeconds(accessTokenExpiration).toEpochMilli()))
                 .build();
         Payload payload = new Payload(claims.toJSONObject());
         byte[] secretKeyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -63,7 +64,7 @@ public class JwtUtils {
                 .subject(name)
                 .claim("user", userlogin)
                 .issueTime(new Date()) // Thời gian phát hành
-                .expirationTime(new Date(System.currentTimeMillis() + accessTokenExpiration ))
+                .expirationTime(new Date(Instant.now().plusSeconds(refreshTokenExpiration).toEpochMilli()))
                 .build();
         Payload payload = new Payload(claims.toJSONObject());
         byte[] secretKeyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
