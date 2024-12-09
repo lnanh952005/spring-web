@@ -27,11 +27,9 @@ public class CompanyController {
 
     @ApiMessage("fetch all companies")
     @GetMapping("/companies")
-    public ResponseEntity<?> fetchAll(@RequestParam Optional<Integer> pageNumber
-                                    , @RequestParam Optional<Integer> pageSize){
-        int pageSize1 = pageSize.orElse(1);
-        int pageNumber1 = pageNumber.orElse(10);
-        Pageable pageable = PageRequest.of(pageNumber1-1,pageSize1);
+    public ResponseEntity<?> fetchAll(@RequestParam(defaultValue = "1") Integer pageNumber
+                                    , @RequestParam(defaultValue = "10") Integer pageSize){
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(companyService.fetchAllCompanies(pageable));
     }
 
@@ -58,6 +56,6 @@ public class CompanyController {
     @DeleteMapping("/companies/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         companyService.deleteCompany(id);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.noContent().build();
     }
 }

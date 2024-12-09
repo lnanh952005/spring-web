@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Long>, JpaSpecificationExecutor<UserEntity> {
     Page<UserEntity> findAll(Pageable pageable);
-
     Optional<UserEntity> findByUsername(String name);
     Optional<UserEntity> findByRefreshTokenAndUsername(String refreshToken, String username);
     Optional<UserEntity> findByUsernameOrEmail(String username, String email);
     List<UserEntity> findByCompany(CompanyEntity company);
+    boolean existsByUsernameOrEmail(String username,String email);
 }

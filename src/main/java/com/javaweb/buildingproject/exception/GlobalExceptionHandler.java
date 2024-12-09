@@ -1,6 +1,6 @@
 package com.javaweb.buildingproject.exception;
 
-import com.javaweb.buildingproject.exception.custom.MissingValueException;
+import com.javaweb.buildingproject.exception.custom.ExistException;
 import com.javaweb.buildingproject.response.RestResponse;
 import com.javaweb.buildingproject.exception.custom.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+//    BadCredentialsException.class
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse> handleValidation(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
@@ -33,16 +33,31 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(restResponse);
     }
 
-    @ExceptionHandler(value = {
-            NotFoundException.class,
-            BadCredentialsException.class
-    })
+    @ExceptionHandler(value = BadCredentialsException.class)
+    public ResponseEntity<RestResponse> handleAuthentication(BadCredentialsException ex) {
+        RestResponse restResponse = new RestResponse();
+        restResponse.setError("unauthorized");
+        restResponse.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        restResponse.setMessage(ex.getMessage()+" (lỗi xác thực)");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(restResponse);
+    }
+
+    @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<RestResponse> handleUserNotfound(Exception exception){
         RestResponse restResponse = new RestResponse();
-        restResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        restResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
         restResponse.setError(exception.getMessage());
         restResponse.setMessage("Exception occured...");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(restResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(restResponse);
+    }
+
+    @ExceptionHandler(value = ExistException.class)
+    public ResponseEntity<RestResponse> handleExist(ExistException exception){
+        RestResponse restResponse = new RestResponse();
+        restResponse.setStatusCode(HttpStatus.CONFLICT.value());
+        restResponse.setError("Exception occured...");
+        restResponse.setMessage(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(restResponse);
     }
 
     @ExceptionHandler(value = JwtException.class)

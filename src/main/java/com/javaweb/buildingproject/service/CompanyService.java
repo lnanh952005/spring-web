@@ -2,6 +2,7 @@ package com.javaweb.buildingproject.service;
 
 import com.javaweb.buildingproject.domain.dto.PaginationDTO;
 import com.javaweb.buildingproject.domain.entity.UserEntity;
+import com.javaweb.buildingproject.exception.custom.ExistException;
 import com.javaweb.buildingproject.mapper.CompanyMapper;
 import com.javaweb.buildingproject.domain.dto.CompanyDTO;
 import com.javaweb.buildingproject.domain.entity.CompanyEntity;
@@ -31,19 +32,15 @@ public class CompanyService{
     }
 
     public CompanyDTO fetchCompanyById(Long id) {
-        Optional<CompanyEntity> companyEntity = companyRepository.findById(id);
-        if(companyEntity.isPresent()) {
-            return companyMapper.toDTO(companyEntity.get());
-        }
-        throw new NotFoundException("Company Not Found by id: " + id);
+        CompanyEntity companyEntity = companyRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Company not found with id: " + id));
+        return companyMapper.toDTO(companyEntity);
     }
 
     public CompanyDTO fetchCompanyByName(String name) {
-        Optional<CompanyEntity> companyEntity = companyRepository.findByName(name);
-        if(companyEntity.isPresent()) {
-            return companyMapper.toDTO(companyEntity.get());
-        }
-        throw new NotFoundException("Company Not Found by name: " + name);
+        CompanyEntity companyEntity = companyRepository.findByName(name)
+                .orElseThrow(()-> new NotFoundException("Company not found with name: " + name));
+        return companyMapper.toDTO(companyEntity);
     }
 
     public PaginationDTO fetchAllCompanies(Pageable pageable) {
@@ -51,8 +48,9 @@ public class CompanyService{
         PaginationDTO paginationDTO = new PaginationDTO();
         PaginationDTO.Meta meta = new PaginationDTO.Meta();
         List<CompanyEntity> companyEntityList = page.getContent();
-        List<CompanyDTO> companyDTOList = companyEntityList.stream().map(e->companyMapper.toDTO(e)).collect(Collectors.toList());
-        meta.setPage(pageable.getPageNumber()+1);
+        List<CompanyDTO> companyDTOList = companyEntityList.stream()
+                .map(e->companyMapper.toDTO(e)).collect(Collectors.toList());
+        meta.setPageNumber(pageable.getPageNumber()+1);
         meta.setPageSize(pageable.getPageSize());
         meta.setPages(page.getTotalPages());
         meta.setTotal(page.getTotalElements());
@@ -62,34 +60,28 @@ public class CompanyService{
     }
 
     public CompanyDTO createCompany(CompanyDTO companyRequest) {
-        Optional<CompanyEntity> companyEntity = companyRepository.findByName(companyRequest.getName());
-        if(companyEntity.isPresent()) {
-            throw new NotFoundException("Company Already Exist by name: " + companyRequest.getName());
-        }
-        companyRepository.save(companyMapper.toEntity(companyRequest));
-        return companyRequest;
+        boolean exist = companyRepository.existsByName(companyRequest.getName());
+        if(exist)
+            throw new ExistException("Company Already Exist by name: " + companyRequest.getName());
+        CompanyEntity companyEntity = companyRepository.save(companyMapper.toEntity(companyRequest));
+        return companyMapper.toDTO(companyEntity);
     }
 
     public CompanyDTO updateCompany(Long id,CompanyDTO companyRequest) {
-        Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(id);
-        if(companyEntityOptional.isEmpty()) {
-            throw new NotFoundException("Company Not Found");
-        }
-        CompanyEntity companyEntity = companyEntityOptional.get();
+        CompanyEntity companyEntity = companyRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Company Not Found"));
         companyEntity.setName(companyRequest.getName());
         companyEntity.setAddress(companyRequest.getAddress());
         companyEntity.setDescription(companyRequest.getDescription());
         companyEntity.setLogo(companyRequest.getLogo());
         companyRepository.save(companyEntity);
-        return companyRequest;
+        return companyMapper.toDTO(companyEntity);
     }
 
     public void deleteCompany(Long id) {
-        Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(id);
-        if(companyEntityOptional.isEmpty()) {
-            throw new NotFoundException("Company Not Found");
-        }
-        List<UserEntity> userEntityList = userRepository.findByCompany(companyEntityOptional.get());
+        CompanyEntity companyEntity = companyRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Company not found with id: " + id));
+        List<UserEntity> userEntityList = userRepository.findByCompany(companyEntity);
         userRepository.deleteAll(userEntityList);
         companyRepository.deleteById(id);
     }

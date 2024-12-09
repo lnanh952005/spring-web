@@ -52,13 +52,13 @@ public class CompanyEntity {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createdBy = SecurityUtils.getUserDetails().toString();
+        this.createdBy = SecurityUtils.getUserDetails().getName();
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updatedBy = SecurityUtils.getUserDetails().toString();
+        this.updatedBy = SecurityUtils.getUserDetails().getName();
         this.updatedAt = Instant.now();
     }
 

@@ -9,6 +9,8 @@ import com.javaweb.buildingproject.repository.UserRepository;
 import com.javaweb.buildingproject.utils.JwtUtils;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -33,23 +35,20 @@ public class AuthService {
     private JwtUtils jwtUtils;
     private UserService userService;
     private UserRepository userRepository;
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
+    private AuthenticationManager authenticationManager;
 
     public AuthService(JwtUtils jwtUtils, UserService userService, UserRepository userRepository
-            ,AuthenticationManagerBuilder authenticationManagerBuilder) {
+        , AuthenticationManager authenticationManager) {
         this.jwtUtils = jwtUtils;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.authenticationManager = authenticationManager;
     }
 
-    public RestLoginDTO authenticateAndGenerateAccessToken(LoginDTO loginDTO) throws JOSEException {
-        //nạp username và password vào security
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
-        //xác thực người dùng => viết hàm loadUserByUsername
-        //nếu có user thì tạo token , nếu k thì dừng tại authentication và ném ra exception
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    public RestLoginDTO generateAccessToken(LoginDTO loginDTO) throws JOSEException {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         RestLoginDTO.Userlogin userlogin = new RestLoginDTO.Userlogin();
         UserDTO userDTO = userService.fetchUserByUserName(loginDTO.getUsername());
@@ -63,7 +62,7 @@ public class AuthService {
         return restLoginDTO;
     }
 
-    public String generateAndSaveRefreshToken(LoginDTO loginDTO) throws JOSEException {
+    public String generateRefreshToken(LoginDTO loginDTO) throws JOSEException {
         Optional<UserEntity> userEntityOptional = userRepository.findByUsername(loginDTO.getUsername());
         if(userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();

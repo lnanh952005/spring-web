@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,12 +61,12 @@ public class UserEntity {
     @PrePersist
     void preCreatedAt() {
         this.createdAt = Instant.now();
-        this.createdBy = SecurityUtils.getUserDetails().toString();
+        this.createdBy = SecurityUtils.getUserDetails().getName();
     }
 
     @PreUpdate
     void preUpdatedAt() {
         this.updatedAt = Instant.now();
-        this.updatedBy = SecurityUtils.getUserDetails().toString();
+        this.updatedBy = SecurityUtils.getUserDetails().getName();
     }
 }

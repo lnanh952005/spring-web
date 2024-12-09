@@ -43,8 +43,8 @@ public class AuthController {
     @ApiMessage("login successfully")
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws JOSEException {
-        RestLoginDTO restLoginDTO = authService.authenticateAndGenerateAccessToken(loginDTO);
-        String refreshToken = authService.generateAndSaveRefreshToken(loginDTO);
+        RestLoginDTO restLoginDTO = authService.generateAccessToken(loginDTO);
+        String refreshToken = authService.generateRefreshToken(loginDTO);
         ResponseCookie responseCookie = ResponseCookie
                 .from("refreshtoken",refreshToken)
                 .httpOnly(true)

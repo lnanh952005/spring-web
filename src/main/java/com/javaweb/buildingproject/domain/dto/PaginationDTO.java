@@ -14,7 +14,7 @@ public class PaginationDTO {
     @Setter
     @JsonPropertyOrder({"page", "pageSize", "pages", "total"})
     public static class Meta {
-        private Integer page; //page : trang hiện tại (bắt đầu từ 0)
+        private Integer pageNumber; //page : trang hiện tại (bắt đầu từ 0)
         private Integer PageSize; //limit : số lượng bản ghi trên mỗi trang (số lượng phần tử)
         private Integer pages;//totalPages : tông số trang với điều kiện query
         private Long total;//totalItem : tổng phần tử có trong DB

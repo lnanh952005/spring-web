@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +27,8 @@ public class JobDTO {
     private LevelEnum level;
 
     private String description;
+
+    private List<SkillDTO> skill;
 
     private CompanyDTO company;
 

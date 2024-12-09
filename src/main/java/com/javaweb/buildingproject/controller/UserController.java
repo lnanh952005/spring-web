@@ -39,16 +39,14 @@ public class UserController {
 
     @ApiMessage("fetch all users")
     @GetMapping("/users")
-    public ResponseEntity<PaginationDTO> fetchAllUsers(@RequestParam Optional<Integer> pageNumber
-                                                    , @RequestParam Optional<Integer> pageSize){
-        int pageNumber1 = pageNumber.isPresent() ? pageNumber.get() : 1;
-        int pageSize1 = pageSize.isPresent() ? pageSize.get() : 10;
-        Pageable pageable = PageRequest.of(pageNumber1-1, pageSize1);
+    public ResponseEntity<PaginationDTO> fetchAllUsers(@RequestParam(defaultValue = "1") Integer pageNumber
+                                                    , @RequestParam(defaultValue = "10") Integer pageSize){
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         PaginationDTO paginationDTO = userService.fetchAllUser(pageable);
         return ResponseEntity.ok().body(paginationDTO);
     }
 
-    @ApiMessage("Register successfully")
+    @ApiMessage("creat user")
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO){
         UserDTO createdUser = userService.createUser(userDTO);
@@ -57,15 +55,15 @@ public class UserController {
     }
 
     @ApiMessage("Update successfully")
-    @PutMapping("/users")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
-        return ResponseEntity.ok().body(userService.updateUser(userDTO));
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO){
+        return ResponseEntity.ok().body(userService.updateUser(id,userDTO));
     }
 
     @ApiMessage("Delete successfully")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
         userService.deleteUserById(id);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.noContent().build();
     }
 }
